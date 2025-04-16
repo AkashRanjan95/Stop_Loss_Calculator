@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stop Loss Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #28a745;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Stop Loss Calculator</h2>
+    <label for="entryPrice">Entry Price (₹):</label>
+    <input type="number" id="entryPrice" placeholder="Enter entry price">
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" placeholder="Enter quantity">
+
+    <label for="maxLoss">Max Loss (₹):</label>
+    <input type="number" id="maxLoss" placeholder="Enter max loss">
+
+    <button onclick="calculateSL()">Calculate SL</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateSL() {
+      const entryPrice = parseFloat(document.getElementById('entryPrice').value);
+      const quantity = parseFloat(document.getElementById('quantity').value);
+      const maxLoss = parseFloat(document.getElementById('maxLoss').value);
+
+      if (!entryPrice || !quantity || !maxLoss || quantity <= 0) {
+        document.getElementById('result').textContent = 'Please enter valid numbers.';
+        return;
+      }
+
+      const slPrice = entryPrice - (maxLoss / quantity);
+      document.getElementById('result').textContent = `Your Stop Loss should be ₹${slPrice.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
