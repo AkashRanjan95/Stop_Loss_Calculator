@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Stop Loss Calculator",
+    "version": "1.0",
+    "description": "Quickly calculate your trading Stop Loss price.",
+    "icons": {
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "48": "icon48.png"
+      }
+    },
+    "permissions": []
+  }
+  

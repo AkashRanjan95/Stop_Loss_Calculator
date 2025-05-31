@@ -1,55 +1,40 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stop Loss Calculator</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      padding: 1rem;
+      width: 300px;
     }
-
-    .container {
-      background: white;
-      padding: 2rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
-    }
-
     h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: #333;
     }
-
     label {
       display: block;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       font-weight: bold;
       color: #444;
     }
-
     input {
       width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
+      padding: 0.4rem;
+      margin-top: 0.2rem;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
     }
-
     button {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.6rem;
       background-color: #007bff;
       color: white;
       border: none;
@@ -58,14 +43,12 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
     button:hover {
       background-color: #0056b3;
     }
-
     .result {
-      margin-top: 1.5rem;
-      font-size: 1.2rem;
+      margin-top: 1rem;
+      font-size: 1.1rem;
       text-align: center;
       color: #28a745;
       font-weight: bold;
@@ -73,36 +56,194 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Stop Loss Calculator</h2>
+  <h2>Stop Loss</h2>
+  <label for="entryPrice">Entry Price (₹):</label>
+  <input type="number" id="entryPrice" placeholder="Enter entry price">
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" placeholder="Enter quantity">
+
+  <label for="maxLoss">Max Loss (₹):</label>
+  <input type="number" id="maxLoss" placeholder="Enter max loss">
+
+  <label for="maxProfit">Max Profit (₹):</label>
+  <input type="number" id="maxProfit" placeholder="Enter max profit">
+
+  <button id="calculateBtn">Calculate</button>
+
+  <div class="result" id="result"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .calculator {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .action-btns button {
+      margin: 0 2px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .edit-btn { background-color: #ffc107; color: #000; }
+    .delete-btn { background-color: #dc3545; color: #fff; }
+  </style>
+</head>
+<body>
+  <h2>Trade Calculator</h2>
+  <div class="calculator">
+    <label for="stock">Stock Name:</label>
+    <input type="text" id="stock">
+
     <label for="entryPrice">Entry Price (₹):</label>
-    <input type="number" id="entryPrice" placeholder="Enter entry price">
+    <input type="number" id="entryPrice">
 
     <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" placeholder="Enter quantity">
+    <input type="number" id="quantity">
 
     <label for="maxLoss">Max Loss (₹):</label>
-    <input type="number" id="maxLoss" placeholder="Enter max loss">
+    <input type="number" id="maxLoss">
 
-    <button onclick="calculateSL()">Calculate SL</button>
+    <label for="maxProfit">Max Profit (₹):</label>
+    <input type="number" id="maxProfit">
 
-    <div class="result" id="result"></div>
+    <button onclick="calculateTrade()">Calculate</button>
   </div>
 
-  <script>
-    function calculateSL() {
-      const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-      const quantity = parseFloat(document.getElementById('quantity').value);
+  <div class="action-buttons">
+    <button onclick="exportToCSV()">Export as CSV</button>
+    <button onclick="addToGoogleCalendar()">Add to Google Calendar</button>
+  </div>
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Stock</th>
+        <th>Entry</th>
+        <th>Qty</th>
+        <th>Amount</th>
+        <th>SL Price</th>
+        <th>TP Price</th>
+        <th>SL %</th>
+        <th>TP %</th>
+        <th>R:R</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script src="popup.js"></script>
+
+  <!-- <script>
+    const today = new Date().toISOString().split('T')[0];
+    const tableBody = document.querySelector('#resultTable tbody');
+    const storageKey = `tradeData-${today}`;
+
+    function calculateTrade() {
+      const stock = document.getElementById('stock').value;
+      const entry = parseFloat(document.getElementById('entryPrice').value);
+      const qty = parseFloat(document.getElementById('quantity').value);
       const maxLoss = parseFloat(document.getElementById('maxLoss').value);
+      const maxProfit = parseFloat(document.getElementById('maxProfit').value);
 
-      if (!entryPrice || !quantity || !maxLoss || quantity <= 0) {
-        document.getElementById('result').textContent = 'Please enter valid numbers.';
-        return;
-      }
+      if (!entry || !qty || !maxLoss || !maxProfit || !stock) return;
 
-      const slPrice = entryPrice - (maxLoss / quantity);
-      document.getElementById('result').textContent = `Your Stop Loss should be ₹${slPrice.toFixed(2)}`;
+      const sl = entry - (maxLoss / qty);
+      const tp = entry + (maxProfit / qty);
+      const slPct = (((sl - entry) / entry) * 100).toFixed(2);
+      const tpPct = (((tp - entry) / entry) * 100).toFixed(2);
+
+      const row = [today, stock, entry.toFixed(2), sl.toFixed(2), tp.toFixed(2), `${slPct}%`, `+${tpPct}%`];
+
+      const tr = document.createElement('tr');
+      row.forEach(cell => {
+        const td = document.createElement('td');
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+
+      tableBody.appendChild(tr);
+
+      let storedData = JSON.parse(localStorage.getItem(storageKey)) || [];
+      storedData.push(row);
+      localStorage.setItem(storageKey, JSON.stringify(storedData));
     }
-  </script>
+
+    function loadStoredData() {
+      const storedData = JSON.parse(localStorage.getItem(storageKey)) || [];
+      storedData.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    }
+
+    window.onload = loadStoredData;
+  </script> -->
 </body>
 </html>
